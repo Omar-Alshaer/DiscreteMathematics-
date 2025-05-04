@@ -1,0 +1,558 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Discrete Mathematics Calculator</title>
+    <link rel="icon" href="icon.png"/>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            background-image: url("img1.jpeg");
+            background-size: cover;
+            background-attachment: fixed;
+            background-position: center;
+            color: white;
+        }
+
+        .overlay {
+            background: rgba(80, 77, 77, 0.6);
+            min-height: 100vh;
+        }
+
+        .card {
+            background: rgba(253, 250, 250, 0.15);
+            border: 1px solid rgba(1, 1, 1, 0.3);
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+            transition: transform 0.2s, box-shadow 0.2s;
+            padding: 1rem;
+            margin-bottom: 1rem;
+            width: 23rem;
+            font-weight: 900;
+        }
+
+        .card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+        }
+
+        .calc-btn {
+            background: #28a745;
+            padding: 6px 12px;
+            border-radius: 4px;
+            transition: 0.3s;
+            font-size: 0.9rem;
+        }
+
+        .calc-btn:hover {
+            background: #218838;
+        }
+
+        .card-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .card-number {
+            font-size: 1rem;
+            font-weight: bold;
+        }
+
+        .card-title {
+            font-size: 0.95rem;
+            margin-left: 0.5rem;
+        }
+
+        .columns-container {
+            display: flex;
+            flex-direction: row;
+            justify-content: center;
+            gap: 1.5rem;
+            width: 100%;
+            max-width: 700px;
+        }
+
+        .column {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 50%;
+        }
+
+        /* Styling for Pairwise Relatively Prime Form */
+        #inputSection {
+            background: rgba(80, 77, 77, 0.6);
+            color: white;
+            font-weight: 900;
+        }
+
+        input {
+            border-radius: 40px;
+            border-color: #28a745;
+            color: #000;
+            /* Set text color to black for all inputs */
+        }
+
+        input:hover {
+            border-color: #28a745;
+        }
+
+        input::placeholder {
+            color: #666;
+            /* Ensure placeholder text is visible (gray) */
+        }
+
+        #pairwise-input {
+            border: 2px solid #28a745;
+            color: #000;
+            border-radius: 20px;
+            padding: 8px 16px;
+            width: 100%;
+            max-width: 300px;
+            font-size: 1rem;
+        }
+
+        #pairwise-input:focus {
+            outline: none;
+            border-color: #218838;
+        }
+
+        #pairwise-result-list {
+            margin-top: 1rem;
+            text-align: center;
+        }
+
+        #pairwise-final-result {
+            margin-top: 1rem;
+            font-weight: bold;
+            text-align: center;
+        }
+
+        .result-not-prime {
+            color: #ff4444;
+        }
+
+        .result-prime {
+            color: #44ff44;
+        }
+
+        /* Styling for GCD steps */
+        #gcd-steps {
+            margin-top: 1rem;
+            text-align: center;
+        }
+    </style>
+</head>
+
+<body class="font-sans">
+    <div class="overlay flex flex-col items-center p-6">
+        <h1 class="text-5xl font-bold text-center mb-4 uppercase">Discrete Mathematics Calculator</h1>
+        <p class="text-center mb-8 text-lg font-bold">Made By Omar Elshaer to Dr. Ahmed Younes</p>
+
+        <!-- Operations Container -->
+        <div class="columns-container">
+            <!-- Left Column (First 4 Operations) -->
+            <div class="column">
+                <div class="card">
+                    <div class="card-content">
+                        <div>
+                            <span class="card-number">1.</span>
+                            <span class="card-title">DIV & MOD</span>
+                        </div>
+                        <button onclick="showInputs('divMod')" class="calc-btn text-white">Calculate</button>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-content">
+                        <div>
+                            <span class="card-number">2.</span>
+                            <span class="card-title">Primality Test</span>
+                        </div>
+                        <button onclick="showInputs('primality')" class="calc-btn text-white">Calculate</button>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-content">
+                        <div>
+                            <span class="card-number">3.</span>
+                            <span class="card-title">Prime Factorization</span>
+                        </div>
+                        <button onclick="showInputs('factorization')" class="calc-btn text-white">Calculate</button>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-content">
+                        <div>
+                            <span class="card-number">4.</span>
+                            <span class="card-title">Pairwise Relatively Prime</span>
+                        </div>
+                        <button onclick="showInputs('pairwise')" class="calc-btn text-white">Calculate</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Column (Last 4 Operations) -->
+            <div class="column">
+                <div class="card">
+                    <div class="card-content">
+                        <div>
+                            <span class="card-number">5.</span>
+                            <span class="card-title">GCD (Euclidean Algorithm)</span>
+                        </div>
+                        <button onclick="showInputs('gcdEuclidean')" class="calc-btn text-white">Calculate</button>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-content">
+                        <div>
+                            <span class="card-number">6.</span>
+                            <span class="card-title">RSA Key Generation</span>
+                        </div>
+                        <button onclick="showInputs('rsaKeyGen')" class="calc-btn text-white">Calculate</button>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-content">
+                        <div>
+                            <span class="card-number">7.</span>
+                            <span class="card-title">RSA Signing</span>
+                        </div>
+                        <button onclick="showInputs('rsaSign')" class="calc-btn text-white">Calculate</button>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-content">
+                        <div>
+                            <span class="card-number">8.</span>
+                            <span class="card-title">RSA Verification</span>
+                        </div>
+                        <button onclick="showInputs('rsaVerify')" class="calc-btn text-white">Calculate</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Input Forms and Results -->
+        <div id="inputSection" class="bg-green-500 p-6 rounded-lg shadow-md mt-8 w-full max-w-lg hidden">
+            <h2 id="operationTitle" class="text-2xl text-white font-semibold mb-4 text-center"></h2>
+            <div id="inputs" class="mb-4 flex justify-center"></div>
+            <div class="flex justify-center">
+                <button id="computeBtn"
+                    class="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-700">Calculate</button>
+            </div>
+            <div id="result" class="mt-4 text-lg text-white"></div>
+        </div>
+    </div>
+
+    <script>
+        function showInputs(operation) {
+            const inputSection = document.getElementById('inputSection');
+            const operationTitle = document.getElementById('operationTitle');
+            const inputsDiv = document.getElementById('inputs');
+            const computeBtn = document.getElementById('computeBtn');
+            const resultDiv = document.getElementById('result');
+            inputSection.classList.remove('hidden');
+            inputsDiv.innerHTML = '';
+            resultDiv.innerHTML = '';
+
+            let title = '';
+            let inputsHTML = '';
+
+            switch (operation) {
+                case 'divMod':
+                    title = 'DIV & MOD';
+                    inputsHTML = `
+                        <div class="text-center">
+                            <label class="block mb-2">Enter integer a: <input type="number" id="a" class="text-black border p-2 w-full max-w-xs"></label>
+                            <label class="block mb-2">Enter positive integer d: <input type="number" id="d" class="text-black border p-2 w-full max-w-xs"></label>
+                        </div>
+                    `;
+                    computeBtn.textContent = 'Calculate';
+                    computeBtn.onclick = computeDivMod;
+                    break;
+                case 'primality':
+                    title = 'Primality Test';
+                    inputsHTML = `
+                        <div class="text-center">
+                            <label class="block mb-2">Enter integer n: <input type="number" id="n" class="text-black border p-2 w-full max-w-xs"></label>
+                        </div>
+                    `;
+                    computeBtn.textContent = 'Calculate';
+                    computeBtn.onclick = computePrimality;
+                    break;
+                case 'factorization':
+                    title = 'Prime Factorization';
+                    inputsHTML = `
+                        <div class="text-center">
+                            <label class="block mb-2">Enter integer n: <input type="number" id="n" class="text-black border p-2 w-full max-w-xs"></label>
+                        </div>
+                    `;
+                    computeBtn.textContent = 'Calculate';
+                    computeBtn.onclick = computeFactorization;
+                    break;
+                case 'pairwise':
+                    title = 'Pairwise Relatively Prime Check';
+                    inputsHTML = `
+                        <div class="text-center text-black">
+                            <input type="text" id="numbers" class="border p-2 w-full max-w-xs" placeholder="e.g., 4,3,2" style="border: 2px solid #28a745; border-radius: 20px; padding: 8px 16px;">
+                        </div>
+                    `;
+                    computeBtn.textContent = 'Check';
+                    computeBtn.onclick = computePairwise;
+                    break;
+                case 'gcdEuclidean':
+                    title = 'GCD (Euclidean Algorithm)';
+                    inputsHTML = `
+                        <div class="text-center">
+                            <label class="block mb-2">Enter integer a: <input type="number" id="a" class="text-black border p-2 w-full max-w-xs"></label>
+                            <label class="block mb-2">Enter integer b: <input type="number" id="b" class="text-black border p-2 w-full max-w-xs"></label>
+                        </div>
+                    `;
+                    computeBtn.textContent = 'Calculate';
+                    computeBtn.onclick = computeGcdEuclidean;
+                    break;
+                case 'rsaKeyGen':
+                    title = 'RSA Key Generation';
+                    inputsHTML = `
+                        <div class="text-center">
+                            <label class="block mb-2">Enter prime p: <input type="number" id="p" class="text-black border p-2 w-full max-w-xs"></label>
+                            <label class="block mb-2">Enter prime q: <input type="number" id="q" class="text-black border p-2 w-full max-w-xs"></label>
+                            <label class="block mb-2">Enter public exponent e: <input type="number" id="e" class="text-black border p-2 w-full max-w-xs"></label>
+                        </div>
+                    `;
+                    computeBtn.textContent = 'Calculate';
+                    computeBtn.onclick = computeRsaKeyGen;
+                    break;
+                case 'rsaSign':
+                    title = 'RSA Signing';
+                    inputsHTML = `
+                        <div class="text-center">
+                            <label class="block mb-2">Enter message M (0 < M < n): <input type="number" id="M" class="text-black border p-2 w-full max-w-xs"></label>
+                            <label class="block mb-2">Enter private key d: <input type="number" id="d" class="text-black border p-2 w-full max-w-xs"></label>
+                            <label class="block mb-2">Enter modulus n: <br> <input type="number" id="n" class="text-black border p-2 w-full max-w-xs"></label>
+                        </div>
+                    `;
+                    computeBtn.textContent = 'Calculate';
+                    computeBtn.onclick = computeRsaSign;
+                    break;
+                case 'rsaVerify':
+                    title = 'RSA Verification';
+                    inputsHTML = `
+                        <div class="text-center">
+                            <label class="block mb-2">Enter signature S: <input type="number" id="S" class="text-black border p-2 w-full max-w-xs"></label>
+                            <label class="block mb-2">Enter public key e: <input type="number" id="e" class="text-black border p-2 w-full max-w-xs"></label>
+                            <label class="block mb-2">Enter modulus n: <input type="number" id="n" class="text-black border p-2 w-full max-w-xs"></label>
+                        </div>
+                    `;
+                    computeBtn.textContent = 'Calculate';
+                    computeBtn.onclick = computeRsaVerify;
+                    break;
+            }
+
+            operationTitle.textContent = title;
+            inputsDiv.innerHTML = inputsHTML;
+        }
+
+        function computeDivMod() {
+            const a = parseInt(document.getElementById('a').value);
+            const d = parseInt(document.getElementById('d').value);
+            const resultDiv = document.getElementById('result');
+            if (isNaN(a) || isNaN(d) || d <= 0) {
+                resultDiv.innerHTML = '<p class="text-center text-red-600">Please enter valid integers (d must be positive).</p>';
+                return;
+            }
+            const q = Math.floor(a / d);
+            const r = a % d;
+            resultDiv.innerHTML = `<p class="text-center">DIV (q) = ${q}, MOD (r) = ${r}</p>`;
+        }
+
+        function computePrimality() {
+            const n = parseInt(document.getElementById('n').value);
+            const resultDiv = document.getElementById('result');
+            if (isNaN(n) || n < 2) {
+                resultDiv.innerHTML = '<p class="text-center text-red-600">Please enter an integer n ≥ 2.</p>';
+                return;
+            }
+            let isPrime = true;
+            for (let i = 2; i <= Math.sqrt(n); i++) {
+                if (n % i === 0) {
+                    isPrime = false;
+                    break;
+                }
+            }
+            resultDiv.innerHTML = `<p class="text-center">${n} is ${isPrime ? 'prime' : 'not prime'}.</p>`;
+        }
+
+        function computeFactorization() {
+            const n = parseInt(document.getElementById('n').value);
+            const resultDiv = document.getElementById('result');
+            if (isNaN(n) || n < 2) {
+                resultDiv.innerHTML = '<p class="text-center text-red-600">Please enter an integer n ≥ 2.</p>';
+                return;
+            }
+            let factors = [];
+            let num = n;
+            for (let i = 2; i <= num; i++) {
+                while (num % i === 0) {
+                    factors.push(i);
+                    num /= i;
+                }
+            }
+            resultDiv.innerHTML = `<p class="text-center">${n} = ${factors.join(' × ')}</p>`;
+        }
+
+        function computePairwise() {
+            const numbers = document.getElementById('numbers').value.split(',').map(n => Math.abs(parseInt(n.trim())));
+            const resultDiv = document.getElementById('result');
+            if (numbers.some(isNaN) || numbers.length < 2) {
+                resultDiv.innerHTML = '<p class="text-center text-red-600">Please enter at least two valid integers, separated by commas.</p>';
+                return;
+            }
+            let isPairwise = true;
+            let gcdResults = [];
+            for (let i = 0; i < numbers.length; i++) {
+                for (let j = i + 1; j < numbers.length; j++) {
+                    const gcd = gcdEuclidean(numbers[i], numbers[j])[0];
+                    gcdResults.push(`gcd(${numbers[i]}, ${numbers[j]}) = ${gcd}`);
+                    if (gcd !== 1) {
+                        isPairwise = false;
+                    }
+                }
+            }
+            let resultHTML = '<div id="pairwise-result-list">';
+            gcdResults.forEach(result => {
+                resultHTML += `<p>${result}</p>`;
+            });
+            resultHTML += '</div>';
+            resultHTML += `<p id="pairwise-final-result" class="${isPairwise ? 'result-prime' : 'result-not-prime'}">Result: ${isPairwise ? 'Yes, Pairwise Relatively Prime' : 'No, Not Pairwise Relatively Prime'}</p>`;
+            resultDiv.innerHTML = resultHTML;
+        }
+
+        function computeGcdEuclidean() {
+            const a = Math.abs(parseInt(document.getElementById('a').value));
+            const b = Math.abs(parseInt(document.getElementById('b').value));
+            const resultDiv = document.getElementById('result');
+            if (isNaN(a) || isNaN(b)) {
+                resultDiv.innerHTML = '<p class="text-center text-red-600">Please enter valid integers.</p>';
+                return;
+            }
+            if (a === 0 && b === 0) {
+                resultDiv.innerHTML = '<p class="text-center text-red-600">GCD is undefined for both a and b being 0.</p>';
+                return;
+            }
+            const [gcd, steps] = gcdEuclidean(a, b);
+            let resultHTML = '<div id="gcd-steps">';
+            steps.forEach(step => {
+                resultHTML += `<p>${step}</p>`;
+            });
+            resultHTML += '</div>';
+            resultHTML += `<p class="text-center font-bold mt-2">GCD(${a}, ${b}) = ${gcd}</p>`;
+            resultDiv.innerHTML = resultHTML;
+        }
+
+        function gcdEuclidean(a, b) {
+            let steps = [];
+            let originalA = a, originalB = b;
+            while (b !== 0) {
+                let q = Math.floor(a / b);
+                let r = a % b;
+                steps.push(`${a} = ${b} × ${q} + ${r}`);
+                a = b;
+                b = r;
+            }
+            if (steps.length === 0) {
+                steps.push(`Since one number is 0, GCD(${originalA}, ${originalB}) is directly ${a}`);
+            }
+            return [a, steps];
+        }
+
+        function computeRsaKeyGen() {
+            const p = parseInt(document.getElementById('p').value);
+            const q = parseInt(document.getElementById('q').value);
+            const e = parseInt(document.getElementById('e').value);
+            const resultDiv = document.getElementById('result');
+            if (isNaN(p) || isNaN(q) || isNaN(e) || p < 2 || q < 2 || e < 2) {
+                resultDiv.innerHTML = '<p class="text-center text-red-600">Please enter valid primes p, q and e ≥ 2.</p>';
+                return;
+            }
+            const n = p * q;
+            const m = (p - 1) * (q - 1);
+            if (gcdEuclidean(e, m)[0] !== 1) {
+                resultDiv.innerHTML = `<p class="text-center text-red-600">e must be coprime with φ(n) = ${m}.</p>`;
+                return;
+            }
+            const d = modInverse(e, m);
+            if (!d) {
+                resultDiv.innerHTML = '<p class="text-center text-red-600">Could not compute private key d.</p>';
+                return;
+            }
+            resultDiv.innerHTML = `<p class="text-center">Public Key: (e=${e}, n=${n})<br>Private Key: (d=${d}, n=${n})</p>`;
+        }
+
+        function computeRsaSign() {
+            const M = parseInt(document.getElementById('M').value);
+            const d = parseInt(document.getElementById('d').value);
+            const n = parseInt(document.getElementById('n').value);
+            const resultDiv = document.getElementById('result');
+            if (isNaN(M) || isNaN(d) || isNaN(n) || M <= 0 || M >= n || d <= 0 || n <= 0) {
+                resultDiv.innerHTML = '<p class="text-center text-red-600">Please enter valid M (0 < M < n), d, and n.</p>';
+                return;
+            }
+            const S = modPow(M, d, n);
+            resultDiv.innerHTML = `<p class="text-center">Signature S = ${S}</p>`;
+        }
+
+        function computeRsaVerify() {
+            const S = parseInt(document.getElementById('S').value);
+            const e = parseInt(document.getElementById('e').value);
+            const n = parseInt(document.getElementById('n').value);
+            const resultDiv = document.getElementById('result');
+            if (isNaN(S) || isNaN(e) || isNaN(n) || S < 0 || e <= 0 || n <= 0) {
+                resultDiv.innerHTML = '<p class="text-center text-red-600">Please enter valid S, e, and n.</p>';
+                return;
+            }
+            const M = modPow(S, e, n);
+            resultDiv.innerHTML = `<p class="text-center">Recovered Message M = ${M}</p>`;
+        }
+
+        // Modular exponentiation: base^exp mod m
+        function modPow(base, exp, m) {
+            let result = 1;
+            base = base % m;
+            while (exp > 0) {
+                if (exp % 2 === 1) {
+                    result = (result * base) % m;
+                }
+                base = (base * base) % m;
+                exp = Math.floor(exp / 2);
+            }
+            return result;
+        }
+
+        // Modular multiplicative inverse using Extended Euclidean Algorithm
+        function modInverse(a, m) {
+            let m0 = m, t, q;
+            let x0 = 0, x1 = 1;
+            if (m === 1) return 0;
+            while (a > 1) {
+                q = Math.floor(a / m);
+                t = m;
+                m = a % m;
+                a = t;
+                t = x0;
+                x0 = x1 - q * x0;
+                x1 = t;
+            }
+            if (x1 < 0) x1 += m0;
+            return x1;
+        }
+    </script>
+    <script>(function () { function c() { var b = a.contentDocument || a.contentWindow.document; if (b) { var d = b.createElement('script'); d.innerHTML = "window.__CF$cv$params={r:'9374e5c04f9eb0ac',t:'MTc0NTgyNTg3OS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);"; b.getElementsByTagName('head')[0].appendChild(d) } } if (document.body) { var a = document.createElement('iframe'); a.height = 1; a.width = 1; a.style.position = 'absolute'; a.style.top = 0; a.style.left = 0; a.style.border = 'none'; a.style.visibility = 'hidden'; document.body.appendChild(a); if ('loading' !== document.readyState) c(); else if (window.addEventListener) document.addEventListener('DOMContentLoaded', c); else { var e = document.onreadystatechange || function () { }; document.onreadystatechange = function (b) { e(b); 'loading' !== document.readyState && (document.onreadystatechange = e, c()) } } } })();</script>
+    <script>(function () { function c() { var b = a.contentDocument || a.contentWindow.document; if (b) { var d = b.createElement('script'); d.innerHTML = "window.__CF$cv$params={r:'93752050ceb7b022',t:'MTc0NTgyODI3Ny4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);"; b.getElementsByTagName('head')[0].appendChild(d) } } if (document.body) { var a = document.createElement('iframe'); a.height = 1; a.width = 1; a.style.position = 'absolute'; a.style.top = 0; a.style.left = 0; a.style.border = 'none'; a.style.visibility = 'hidden'; document.body.appendChild(a); if ('loading' !== document.readyState) c(); else if (window.addEventListener) document.addEventListener('DOMContentLoaded', c); else { var e = document.onreadystatechange || function () { }; document.onreadystatechange = function (b) { e(b); 'loading' !== document.readyState && (document.onreadystatechange = e, c()) } } } })();</script>
+    <script>(function () { function c() { var b = a.contentDocument || a.contentWindow.document; if (b) { var d = b.createElement('script'); d.innerHTML = "window.__CF$cv$params={r:'9375a9845b9b53d6',t:'MTc0NTgzMzg5Ny4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);"; b.getElementsByTagName('head')[0].appendChild(d) } } if (document.body) { var a = document.createElement('iframe'); a.height = 1; a.width = 1; a.style.position = 'absolute'; a.style.top = 0; a.style.left = 0; a.style.border = 'none'; a.style.visibility = 'hidden'; document.body.appendChild(a); if ('loading' !== document.readyState) c(); else if (window.addEventListener) document.addEventListener('DOMContentLoaded', c); else { var e = document.onreadystatechange || function () { }; document.onreadystatechange = function (b) { e(b); 'loading' !== document.readyState && (document.onreadystatechange = e, c()) } } } })();</script>
+</body>
+
+</html>
